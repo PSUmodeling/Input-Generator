@@ -1,0 +1,5 @@
+DEST_FILE               $CROP           $DOY
+test1.operation         corn            109
+test2.operation         corn            110
+test3.operation         wheat           109
+test4.operation         wheat           110
