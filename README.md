@@ -4,7 +4,7 @@ C code to generate multiple input files from template by replacing keywords.
 The program requires two input files: a template file and a configuration file.
 1. In the template file, keywords that need to be marked using a **"$"** sign.
    Multiple keywords can be used.
-   For example, in the sample template file, `test.operation`, keywords **$CROP** and **$$DOY** are used.
+   For example, in the sample template file, `test.operation`, keywords **$CROP** and **$DOY** are used.
 2. The header line of the configuration file should start with **DEST_FILE**, followed by keywords that appear in the template file.
    The following lines of configuration file should specify the destination file name, and the replace words for each keywords.
 
