@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #define MAXKW     10     /* Maximum number of keywords */
 #define MAXREPL   50     /* Maximum number of target files */
@@ -127,12 +128,13 @@ void ReadConfig(const char *fname, input_gen_struct *input_gen)
 }
 
 void Replace(const char template_name[MAXSTRING], const char fname[MAXSTRING],
-    char keyword[][MAXSTRING], char replace[][MAXSTRING],
-    int n_keywords)
+    const char outdir[MAXSTRING], char keyword[][MAXSTRING],
+    char replace[][MAXSTRING], int n_keywords)
 {
     FILE           *template;
     FILE           *dest;
     char            string[MAXSTRING];
+    char            fpath[MAXSTRING];
     char           *ptr1, *ptr2;
     int             i;
     int             flag = 0;
@@ -148,7 +150,8 @@ void Replace(const char template_name[MAXSTRING], const char fname[MAXSTRING],
     }
 
     /* Open temporary file in write mode */
-    dest = fopen(fname, "w");
+    sprintf(fpath, "%s/%s", outdir, fname);
+    dest = fopen(fpath, "w");
 
     /* Error handling */
     if (!dest)
@@ -223,21 +226,24 @@ int main(int argc, char *argv[])
 {
     char            template_name[MAXSTRING];
     char            config_name[MAXSTRING];
+    char            outdir[MAXSTRING];
     int             i;
     input_gen_struct input_gen;
 
   /*
    * Get template file name and configuration file name from command line
    */
-    if (argc != 3)
+    if (argc != 4)
     {
         printf(
-            "Please specify names of template file and configuration file.\n");
+            "Please specify names of template file and configuration file, "
+            "and path for generated files.\n");
         return(EXIT_FAILURE);
     }
 
     strcpy(template_name, argv[1]);
     strcpy(config_name, argv[2]);
+    strcpy(outdir, argv[3]);
 
     /*
      * Read configuration file
@@ -247,9 +253,11 @@ int main(int argc, char *argv[])
     /*
      * Replace keywords from template file
      */
+    mkdir(outdir, 0755);
+
     for (i = 0; i < input_gen.n_replace; i++)
     {
-        Replace(template_name, input_gen.fname[i], input_gen.keyword,
+        Replace(template_name, input_gen.fname[i], outdir, input_gen.keyword,
             input_gen.replace[i], input_gen.n_keywords);
     }
 
