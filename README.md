@@ -10,7 +10,7 @@ The program requires two input files: a template file and a configuration file.
 
 To start replacing, run
 ```shell
-./input_gen <template file> <configuration file>
+./input_gen <template file> <configuration file> <path_to_generated_files>
 ```
 
 **NOTE:** Currently, only one keyword is allowed in each line of the template file.
